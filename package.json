@@ -1,0 +1,12 @@
+{
+  "name": "file-api-cho-trang-login",
+  "version": "1.0.0",
+  "main": "create_new_user.js",
+  "scripts": {
+    "start": "node create_new_user.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
