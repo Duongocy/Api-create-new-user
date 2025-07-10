@@ -19,6 +19,17 @@ const pool = new Pool({
 app.get('/Invoice',async (yeucaune,traloine) =>{
     const ten_user = yeucaune.query.username;
     console.log("Tên cần kiểm tra nè : ",ten_user);
+    try {
+            const ket_qua_kiem_tra_ton_tai = await pool.query(
+            'SELECT 1 FROM user_table WHERE user_name = $1 LIMIT 1',
+            [ten_user]
+            );
+            res.json({ exists: result.rows.length > 0 });
+        } 
+    catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Không thể kiểm tra sự tồn tại của user name' });
+        }
 })
 // Thêm dữ liệu user vào bảng user
 app.post('/Invoice', async (req, res) => {
