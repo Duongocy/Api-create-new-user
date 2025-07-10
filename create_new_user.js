@@ -24,11 +24,11 @@ app.get('/Invoice',async (yeucaune,traloine) =>{
             'SELECT 1 FROM user_table WHERE user_name = $1 LIMIT 1',
             [ten_user]
             );
-            res.json({ exists: result.rows.length > 0 });
+            traloine.json({ exists: result.rows.length > 0 });
         } 
     catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Không thể kiểm tra sự tồn tại của user name' });
+            traloine.status(500).json({ error: 'Không thể kiểm tra sự tồn tại của user name' });
         }
 })
 // Thêm dữ liệu user vào bảng user
