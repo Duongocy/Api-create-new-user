@@ -39,11 +39,11 @@ app.post('/Invoice', async (req, res) => {
                     'INSERT INTO user_table (user_id,user_name,create_date,email,pass) VALUES ($1, $2, $3,$4,$5) RETURNING *',
                     [user_id,user_name,create_date,email,pass]
                 );
-            res.status(201);//không gởi phản hồi trong vòng for vì nó sẽ kết thúc việc lưu dữ liệu ngay sau vòng lặp đầu tiên
+        res.status(201);
         }
     catch (err) {
         console.error(err);
-        res.status(500).send('Lỗi khi thêm dữ liệu');
+        res.status(500);
     }
 });
 
