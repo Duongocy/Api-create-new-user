@@ -34,6 +34,7 @@ app.post('/Invoice', async (req, res) => {
     console.log("Đã nhận được yêu cầu tạo user từ client");//báo trên log là đã nhận được 1 yêu cầu từ client
     // console.log(product_name,price,quantity);
     try {
+        console.log("Đang cố ghi thông tin user mới vào database...");
         const {user_id,user_name,create_date,email,pass} = user_array;
         const result = await pool.query(
                     'INSERT INTO user_table (user_id,user_name,create_date,email,pass) VALUES ($1, $2, $3,$4,$5) RETURNING *',
@@ -42,6 +43,7 @@ app.post('/Invoice', async (req, res) => {
         res.status(201);
         }
     catch (err) {
+        console.log("Không thể ghi thông tin user mới vào database.")
         console.error(err);
         res.status(500);
     }
