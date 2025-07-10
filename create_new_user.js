@@ -40,12 +40,12 @@ app.post('/Invoice', async (req, res) => {
                     'INSERT INTO user_table (user_id,user_name,create_date,email,pass) VALUES ($1, $2, $3,$4,$5) RETURNING *',
                     [user_id,user_name,create_date,email,pass]
                 );
-        res.status(201);
+        res.sendStatus(201);
         }
     catch (err) {
         console.log("Không thể ghi thông tin user mới vào database.")
         console.error(err);
-        res.status(500);
+        res.sendStatus(500);
     }
 });
 
