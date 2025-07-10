@@ -17,8 +17,8 @@ const pool = new Pool({
 
 //Kiểm tra xem user name đã tồn tại chưa 
 app.get('/Invoice',async (yeucaune,traloine) =>{
-    const {ten_user} = yeucaune.query;
-    console.log("Tên cần kiểm tra nè : ",{ten_user});
+    const ten_user = yeucaune.query.username;
+    console.log("Tên cần kiểm tra nè : ",ten_user);
 })
 // Thêm dữ liệu user vào bảng user
 app.post('/Invoice', async (req, res) => {
