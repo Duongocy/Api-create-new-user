@@ -20,8 +20,8 @@ app.get('/Invoice',async (yeucaune,traloine) =>{
     const ten_user = yeucaune.query.username;
     console.log("Tên cần kiểm tra nè : ",ten_user);
     try {
-            const ket_qua_kiem_tra_ton_tai = await pool.query('SELECT 1 FROM user_table WHERE user_name = $1 LIMIT 1',ten_user);
-            traloine.json({ exists: result.rows.length > 0 });
+            const ket_qua_kiem_tra_ton_tai = await pool.query('SELECT 1 FROM user_table WHERE user_name = $1 LIMIT 1',[ten_user]);
+            traloine.json({ exists: ket_qua_kiem_tra_ton_tai.rows.length > 0 });
         } 
     catch (err) {
             console.error(err);
