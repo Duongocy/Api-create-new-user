@@ -16,17 +16,28 @@ const pool = new Pool({
 });
 
 //Kiểm tra xem user name đã tồn tại chưa 
-app.get('/Invoice',async (yeucaune,traloine) =>{
+app.get('/Invoice',async (yeucaune,traloine) =>{    
     const ten_user = yeucaune.query.username;
-    console.log("Tên cần kiểm tra nè : ",ten_user);
-    try {
-            const ket_qua_kiem_tra_ton_tai = await pool.query('SELECT 1 FROM user_table WHERE user_name = $1 LIMIT 1',[ten_user]);
-            traloine.json({ exists: ket_qua_kiem_tra_ton_tai.rows.length > 0 });
-        } 
-    catch (err) {
-            console.error(err);
-            traloine.status(500).json({ error: 'Không thể kiểm tra sự tồn tại của user name' });
-        }
+    const kieu_yeu_cau = yeucaune.query.kieuyeucau;
+    if (kieu_yeu_cau==='checkusertontai')
+    {
+        console.log("Tên cần kiểm tra nè : ",ten_user);
+        try {
+                const ket_qua_kiem_tra_ton_tai = await pool.query('SELECT 1 FROM user_table WHERE user_name = $1 LIMIT 1',[ten_user]);
+                traloine.json({ exists: ket_qua_kiem_tra_ton_tai.rows.length > 0 });
+            } 
+        catch (err) {
+                console.error(err);
+                traloine.status(500).json({ error: 'Không thể kiểm tra sự tồn tại của user name' });
+            }
+    }
+    else if (kieu_yeu_cau='dangnhap')
+    {
+        const ten_email = yeucaune.query.email;
+        const password = yeucaune.query.pass;
+        console.log("Email đăng nhập :",ten_email);
+        console.log("Pass đăng nhâp :",password);    
+    }    
 })
 // Thêm dữ liệu user vào bảng user
 app.post('/Invoice', async (req, res) => {
