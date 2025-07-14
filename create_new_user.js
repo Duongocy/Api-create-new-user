@@ -31,12 +31,13 @@ app.get('/Invoice',async (yeucaune,traloine) =>{
                 traloine.status(500).json({ error: 'Không thể kiểm tra sự tồn tại của user name' });
             }
     }
-    else if (kieu_yeu_cau='dangnhap')
+    else if (kieu_yeu_cau==='dangnhap')
     {
         const ten_email = yeucaune.query.email;
         const password = yeucaune.query.pass;
         console.log("Email đăng nhập :",ten_email);
-        console.log("Pass đăng nhâp :",password);    
+        console.log("Pass đăng nhâp :",password);   
+        //kiểm tra xem có đúng email và pass không nè 
     }    
 })
 // Thêm dữ liệu user vào bảng user
