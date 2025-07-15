@@ -38,6 +38,27 @@ app.get('/Invoice',async (yeucaune,traloine) =>{
         console.log("Email đăng nhập :",ten_email);
         console.log("Pass đăng nhâp :",password);   
         //kiểm tra xem có đúng email và pass không nè 
+        try {
+                const ket_qua_kiem_tra_ton_tai = await pool.query('SELECT user_name,user_id FROM user_table WHERE email = $1 AND pass = $2 ',[ten_email,password]);
+                // Kiểm tra xem có bản ghi nào không
+                if (ket_qua_kiem_tra_ton_tai.rows.length > 0) {
+                // Nếu có, trả kết quả về client
+                    res.status(200).json({
+                    status: 'success',
+                    data: ket_qua_kiem_tra_ton_tai.rows[0] // Gửi thông tin người dùng đầu tiên tìm thấy
+                    });
+                } else {
+                // Nếu không có, thông báo không tìm thấy
+                    res.status(404).json({
+                    status: 'fail',
+                    message: 'Không tìm thấy người dùng'
+                    });
+                }
+            } 
+        catch (err) {
+                console.error(err);
+                traloine.status(500).json({ error: 'Không thể kiểm tra sự tồn tại của user name' });
+            }
     }    
 })
 // Thêm dữ liệu user vào bảng user
