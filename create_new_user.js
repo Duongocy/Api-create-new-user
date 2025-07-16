@@ -19,6 +19,7 @@ const pool = new Pool({
 app.get('/Invoice',async (yeucaune,traloine) =>{    
     const ten_user = yeucaune.query.username;
     const kieu_yeu_cau = yeucaune.query.kieuyeucau;
+    //kiểm tra xem tên user đã tồn tại chưa, khi người dùng đang nhập tên user name 
     if (kieu_yeu_cau==='checkusertontai')
     {
         console.log("Tên cần kiểm tra nè : ",ten_user);
@@ -31,6 +32,7 @@ app.get('/Invoice',async (yeucaune,traloine) =>{
                 traloine.status(500).json({ error: 'Không thể kiểm tra sự tồn tại của user name' });
             }
     }
+    //xử lý yêu cầu đăng nhập
     else if (kieu_yeu_cau==='dangnhap')
     {
         const ten_email = yeucaune.query.email;
@@ -61,25 +63,37 @@ app.get('/Invoice',async (yeucaune,traloine) =>{
             }
     }    
 })
-// Thêm dữ liệu user vào bảng user
+// Thêm dữ liệu user vào bảng user_table
 app.post('/Invoice', async (req, res) => {
-    const user_array = req.body;
     console.log("Đã nhận được yêu cầu tạo user từ client");//báo trên log là đã nhận được 1 yêu cầu từ client
+    const user_array = req.body; //nhận các thông tin về user mới vào biến  user_array
+    const {user_id,user_name,create_date,email,pass} = user_array; //tách các thông tin về new user vào các biến cụ thể
     // console.log(product_name,price,quantity);
     try {
-        console.log("Đang cố ghi thông tin user mới vào database...");
-        const {user_id,user_name,create_date,email,pass} = user_array;
-        const result = await pool.query(
-                    'INSERT INTO user_table (user_id,user_name,create_date,email,pass) VALUES ($1, $2, $3,$4,$5) RETURNING *',
-                    [user_id,user_name,create_date,email,pass]
-                );
-        res.status(201).json({ message: 'User created successfully' });
+        //kiểm tra thông tin user đã tồn tại hay chưa
+        const kiem_tra_ton_tai_email = await pool.query('SELECT 1 FROM user_table WHERE email = $1 LIMIT 1',[email]);
+        if (kiem_tra_ton_tai_email.rows.length>0){//email đã tồn tại rồi 
+            res.json({ exists: true});//phản hồi lại client là email đã tồn tại rồi 
         }
-    catch (err) {
-        console.log("Không thể ghi thông tin user mới vào database.")
-        console.error(err);
-        res.status(500).json({ message: 'User created failed' });
+        else {//nếu email chưa tồn tại
+           try { 
+                console.log("Đang cố ghi thông tin user mới vào database...");      
+                const result = await pool.query('INSERT INTO user_table (user_id,user_name,create_date,email,pass) VALUES ($1, $2, $3,$4,$5) RETURNING *',[user_id,user_name,create_date,email,pass]);//ghi thông tin user mới vào database 
+                res.status(201).json({ message: 'User created successfully' });//báo cho client là thành công rồi 
+            }
+            catch (err) {//nếu có lỗi xảy ra trong quá trình ghi thông tin user mới vào database 
+                console.log("Không thể ghi thông tin user mới vào database.")
+                console.error(err);
+                res.status(500).json({ message: 'User created failed' });
+            }
+        }
     }
+    catch (loi){
+        console.log("Không thể kiểm tra email tồn tại")
+        console.error(loi);
+        res.status(500).json({ message: 'Login failed' });
+    }      
+    //kết thúc try catch phần ghi user mới vào database 
 });
 
 // Khởi động server
