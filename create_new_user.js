@@ -70,10 +70,11 @@ app.post('/Invoice', async (req, res) => {
     const {user_id,user_name,create_date,email,pass} = user_array; //tách các thông tin về new user vào các biến cụ thể
     // console.log(product_name,price,quantity);
     try {
-        //kiểm tra thông tin user đã tồn tại hay chưa
+        //kiểm tra thông tin email đã tồn tại hay chưa
         const kiem_tra_ton_tai_email = await pool.query('SELECT 1 FROM user_table WHERE email = $1 LIMIT 1',[email]);
         if (kiem_tra_ton_tai_email.rows.length>0){//email đã tồn tại rồi 
             res.json({ exists: true});//phản hồi lại client là email đã tồn tại rồi 
+            console.log("Email đã tồn tại");
         }
         else {//nếu email chưa tồn tại
            try { 
