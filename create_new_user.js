@@ -35,37 +35,39 @@ app.get('/Invoice',async (yeucaune,traloine) =>{
     //xử lý yêu cầu đăng nhập
     else if (kieu_yeu_cau==='dangnhap')
     {
-        const ten_email = yeucaune.query.email;
-        const password = yeucaune.query.pass;
-        console.log("Email đăng nhập :",ten_email);
-        console.log("Pass đăng nhâp :",password);   
-        //kiểm tra xem có đúng email và pass không nè 
-        try {
-                const ket_qua_kiem_tra_ton_tai = await pool.query('SELECT user_name,user_id FROM user_table WHERE email = $1 AND pass = $2 ',[ten_email,password]);
-                // Kiểm tra xem có bản ghi nào không
-                if (ket_qua_kiem_tra_ton_tai.rows.length > 0) {
-                // Nếu có, trả kết quả về client
-                    traloine.status(200).json({
-                    status: 'success',
-                    data: ket_qua_kiem_tra_ton_tai.rows[0] // Gửi thông tin người dùng đầu tiên tìm thấy
-                    });
-                } else {
-                // Nếu không có, thông báo không tìm thấy
-                    traloine.status(404).json({
-                    status: 'fail',
-                    message: 'Không tìm thấy người dùng'
-                    });
-                }
-            } 
-        catch (err) {
-                console.error(err);
-                traloine.status(500).json({ error: 'Không thể kiểm tra sự tồn tại của user name' });
-            }
+        // const ten_email = yeucaune.query.email;
+        // const password = yeucaune.query.pass;
+        // console.log("Email đăng nhập :",ten_email);
+        // console.log("Pass đăng nhâp :",password);   
+        // //kiểm tra xem có đúng email và pass không nè 
+        // try {
+        //         const ket_qua_kiem_tra_ton_tai = await pool.query('SELECT user_name,user_id FROM user_table WHERE email = $1 AND pass = $2 ',[ten_email,password]);
+        //         // Kiểm tra xem có bản ghi nào không
+        //         if (ket_qua_kiem_tra_ton_tai.rows.length > 0) {
+        //         // Nếu có, trả kết quả về client
+        //             traloine.status(200).json({
+        //             status: 'success',
+        //             data: ket_qua_kiem_tra_ton_tai.rows[0] // Gửi thông tin người dùng đầu tiên tìm thấy
+        //             });
+        //         } else {
+        //         // Nếu không có, thông báo không tìm thấy
+        //             traloine.status(404).json({
+        //             status: 'fail',
+        //             message: 'Không tìm thấy người dùng'
+        //             });
+        //         }
+        //     } 
+        // catch (err) {
+        //         console.error(err);
+        //         traloine.status(500).json({ error: 'Không thể kiểm tra sự tồn tại của user name' });
+        //     }
     }    
 })
 // Thêm dữ liệu user vào bảng user_table
-app.post('/Invoice', async (req, res) => {
+app.post('/Invoice', async (req, res) => {    
     console.log("Đã nhận được yêu cầu tạo user từ client");//báo trên log là đã nhận được 1 yêu cầu từ client
+    const request_type =req.query.kieuyeucau;
+    if (request_type==='dangky'){
     const user_array = req.body; //nhận các thông tin về user mới vào biến  user_array
     const {user_id,user_name,create_date,email,pass} = user_array; //tách các thông tin về new user vào các biến cụ thể
     // console.log(product_name,price,quantity);
@@ -93,7 +95,36 @@ app.post('/Invoice', async (req, res) => {
         console.log("Không thể kiểm tra email tồn tại")
         console.error(loi);
         res.status(500).json({ message: 'Login failed' });
-    }      
+    }   
+    }
+    else if (request_type==='dangnhap')   {
+        const ten_email = yeucaune.query.email;
+        const password = yeucaune.query.pass;
+        console.log("Email đăng nhập :",ten_email);
+        console.log("Pass đăng nhâp :",password);   
+        //kiểm tra xem có đúng email và pass không nè 
+        try {
+                const ket_qua_kiem_tra_ton_tai = await pool.query('SELECT user_name,user_id FROM user_table WHERE email = $1 AND pass = $2 ',[ten_email,password]);
+                // Kiểm tra xem có bản ghi nào không
+                if (ket_qua_kiem_tra_ton_tai.rows.length > 0) {
+                // Nếu có, trả kết quả về client
+                    traloine.status(200).json({
+                    status: 'success',
+                    data: ket_qua_kiem_tra_ton_tai.rows[0] // Gửi thông tin người dùng đầu tiên tìm thấy
+                    });
+                } else {
+                // Nếu không có, thông báo không tìm thấy
+                    traloine.status(404).json({
+                    status: 'fail',
+                    message: 'Không tìm thấy người dùng'
+                    });
+                }
+            } 
+        catch (err) {
+                console.error(err);
+                traloine.status(500).json({ error: 'Không thể kiểm tra sự tồn tại của user name' });
+            }
+    }
     //kết thúc try catch phần ghi user mới vào database 
 });
 
