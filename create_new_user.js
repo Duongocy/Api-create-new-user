@@ -98,6 +98,7 @@ app.post('/Invoice', async (req, res) => {
     }   
     }
     else if (request_type==='dangnhap')   {
+        console.log("Đang nhận yêu cầu đăng nhập từ client.");
         const { ten_email, password } = req.body;
         console.log("Email đăng nhập :",ten_email);
         console.log("Pass đăng nhâp :",password);   
