@@ -98,8 +98,7 @@ app.post('/Invoice', async (req, res) => {
     }   
     }
     else if (request_type==='dangnhap')   {
-        const ten_email = yeucaune.query.email;
-        const password = yeucaune.query.pass;
+        const { ten_email, password } = req.body;
         console.log("Email đăng nhập :",ten_email);
         console.log("Pass đăng nhâp :",password);   
         //kiểm tra xem có đúng email và pass không nè 
