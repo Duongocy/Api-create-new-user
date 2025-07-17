@@ -108,13 +108,13 @@ app.post('/Invoice', async (req, res) => {
                 // Kiểm tra xem có bản ghi nào không
                 if (ket_qua_kiem_tra_ton_tai.rows.length > 0) {
                 // Nếu có, trả kết quả về client
-                    traloine.status(200).json({
+                    res.status(200).json({
                     status: 'success',
                     data: ket_qua_kiem_tra_ton_tai.rows[0] // Gửi thông tin người dùng đầu tiên tìm thấy
                     });
                 } else {
                 // Nếu không có, thông báo không tìm thấy
-                    traloine.status(404).json({
+                    res.status(404).json({
                     status: 'fail',
                     message: 'Không tìm thấy người dùng'
                     });
