@@ -110,13 +110,13 @@ app.post('/Invoice', async (req, res) => {
                 if (ket_qua_kiem_tra_ton_tai.rows.length > 0) {
                 // Nếu có, trả kết quả về client
                 //tạo token 
-                    const token = create_token.sign({ email: ten_email, password:password }, 'DuoNgocY', { expiresIn: '1h' });
+                    const token = create_token.sign({ email: ten_email}, 'DuoNgocY', { expiresIn: '1h' });
                     res.status(200).json({
                     status: 'success',
                     token,
                     data: ket_qua_kiem_tra_ton_tai.rows[0] // Gửi thông tin người dùng đầu tiên tìm thấy
                     });
-
+                    
                 } else {
                 // Nếu không có, thông báo không tìm thấy
                     res.status(404).json({
@@ -127,7 +127,7 @@ app.post('/Invoice', async (req, res) => {
             } 
         catch (err) {
                 console.error(err);
-                traloine.status(500).json({ error: 'Không thể kiểm tra sự tồn tại của user name' });
+                res.status(500).json({ error: 'Không thể kiểm tra sự tồn tại của user name' });
             }
     }
     //kết thúc try catch phần ghi user mới vào database 
