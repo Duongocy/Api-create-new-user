@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors'); // Import thư viện cors
 const { Pool } = require('pg');
+const create_token = require('jsonwebtoken');//khai báo thư viện jkt để tạo token cho mỗi lần đăng nhập
 
 const app = express();
 app.use(cors()); // Sử dụng middleware CORS
@@ -108,10 +109,14 @@ app.post('/Invoice', async (req, res) => {
                 // Kiểm tra xem có bản ghi nào không
                 if (ket_qua_kiem_tra_ton_tai.rows.length > 0) {
                 // Nếu có, trả kết quả về client
+                //tạo token 
+                    const token = create_token.sign({ email: ten_email, password:password }, 'DuoNgocY', { expiresIn: '1h' });
                     res.status(200).json({
                     status: 'success',
+                    token,
                     data: ket_qua_kiem_tra_ton_tai.rows[0] // Gửi thông tin người dùng đầu tiên tìm thấy
                     });
+
                 } else {
                 // Nếu không có, thông báo không tìm thấy
                     res.status(404).json({
