@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors'); // Import thư viện cors
 const { Pool } = require('pg');
 const create_token = require('jsonwebtoken');//khai báo thư viện jkt để tạo token cho mỗi lần đăng nhập
+const cron = require('node-cron');
 
 const app = express();
 app.use(cors()); // Sử dụng middleware CORS
@@ -131,6 +132,17 @@ app.post('/Invoice', async (req, res) => {
             }
     }
     //kết thúc try catch phần ghi user mới vào database 
+});
+
+//giữ cho database luôn thức 
+cron.schedule('* * * * *', async () => {
+  console.log('[PING] Giữ database luôn thức 😴➡️😎');
+  try {
+    const result = await pool.query('SELECT 1');
+    console.log(`[PING] OK at ${new Date().toISOString()}`);
+  } catch (err) {
+    console.error('[PING] Fail:', err.message);
+  }
 });
 
 // Khởi động server
