@@ -134,15 +134,9 @@ app.post('/Invoice', async (req, res) => {
     //kết thúc try catch phần ghi user mới vào database 
 });
 
-//giữ cho database luôn thức 
-cron.schedule('* * * * *', async () => {
-  console.log('[PING] Giữ database luôn thức 😴➡️😎');
-  try {
-    const result = await pool.query('SELECT 1');
-    console.log(`[PING] OK at ${new Date().toISOString()}`);
-  } catch (err) {
-    console.error('[PING] Fail:', err.message);
-  }
+//1 luồng đơn giản để nhận tín hiệu ping
+app.get('/ping', (req, res) => {
+  res.send('pong!');
 });
 
 // Khởi động server
