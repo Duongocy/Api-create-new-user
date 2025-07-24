@@ -11,7 +11,7 @@ app.use(express.json());
 // Cấu hình kết nối đến PostgreSQL
 const pool = new Pool({
     user: 'postgres', // Thay thế bằng username của bạn
-    host: '14.165.172.59',//địa chỉ ip công khai của máy fujitsu 
+    host: '123.19.121.187',//địa chỉ ip công khai của máy fujitsu 
     database: 'Invoice',
     password: '1!Ngaycuoicung', // Thay thế bằng password của bạn
     port: 5432
