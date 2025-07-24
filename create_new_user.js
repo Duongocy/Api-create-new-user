@@ -134,9 +134,10 @@ app.post('/Invoice', async (req, res) => {
     //kết thúc try catch phần ghi user mới vào database 
 });
 
-//1 luồng đơn giản để nhận tín hiệu ping
+//1 luồng đơn giản để nhận tín hiệu ping từ trang web cron job (https://console.cron-job.org/jobs)giữ api trên render luôn thức
 app.get('/ping', (req, res) => {
   res.send('pong!');
+  console.log('Vừa nhận Ping signal');
 });
 
 // Khởi động server
