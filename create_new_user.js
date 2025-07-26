@@ -10,15 +10,22 @@ app.use(express.json());
 
 // Cấu hình kết nối đến PostgreSQL
 const pool = new Pool({
-    user: 'postgres', // Thay thế bằng username của bạn
-    host: '123.19.121.187',//địa chỉ ip công khai của máy fujitsu 
-    database: 'Invoice',
-    password: '1!Ngaycuoicung', // Thay thế bằng password của bạn
-    port: 5432
+    //kết nối với máy local
+    // user: 'postgres', // Thay thế bằng username của bạn
+    // host: '123.19.121.187',//địa chỉ ip công khai của máy fujitsu 
+    // database: 'Invoice',
+    // password: '1!Ngaycuoicung', // Thay thế bằng password của bạn
+    // port: 5432
+
+    //kết với với database trên neon :
+    connectionString: 'postgresql://neondb_owner:npg_HoJmb5DBF6qG@ep-little-tree-a1x11z62-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require',
+    ssl: {
+        rejectUnauthorized: false // Neon dùng SSL
+    }
 });
 
 //Kiểm tra xem user name đã tồn tại chưa 
-app.get('/Invoice',async (yeucaune,traloine) =>{    
+app.get('/invoice',async (yeucaune,traloine) =>{    
     const ten_user = yeucaune.query.username;
     const kieu_yeu_cau = yeucaune.query.kieuyeucau;
     //kiểm tra xem tên user đã tồn tại chưa, khi người dùng đang nhập tên user name 
@@ -66,7 +73,7 @@ app.get('/Invoice',async (yeucaune,traloine) =>{
     }    
 })
 // Thêm dữ liệu user vào bảng user_table
-app.post('/Invoice', async (req, res) => {    
+app.post('/invoice', async (req, res) => {    
     console.log("Đã nhận được yêu cầu tạo user từ client");//báo trên log là đã nhận được 1 yêu cầu từ client
     const request_type =req.query.kieuyeucau;
     if (request_type==='dangky'){
