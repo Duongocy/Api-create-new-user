@@ -1,9 +1,9 @@
 {
-  "name": "file-api-cho-trang-login",
+  "name": "api-for-learning-english-page",
   "version": "1.0.0",
-  "main": "create_new_user.js",
+  "main": "learning-english-api.js",
   "scripts": {
-    "start": "node create_new_user.js"
+    "start": "node learning-english-api.js"
   },
   "keywords": [],
   "author": "",
